@@ -50,7 +50,7 @@ echo "-> You will be prompted for your password to install dependencies and the 
 # -s : Sync and install dependencies automatically using pacman.
 # -i : Install the package after a successful build.
 # -c : Clean up leftover files and directories after the build.
-makepkg -sic
+makepkg -sic | tee ~/build.log
 
 echo "---"
 echo "SUCCESS: Plasma Bigscreen has been built and installed."
