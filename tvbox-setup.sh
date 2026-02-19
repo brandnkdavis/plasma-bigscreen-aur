@@ -32,7 +32,7 @@ if ! command -v yay &> /dev/null; then
     sudo pacman -S --noconfirm --needed base-devel git
     git clone https://aur.archlinux.org/yay.git /tmp/yay
     (cd /tmp/yay && makepkg -si --noconfirm)
-    echo "✅ 'yay' has been installed."
+    echo "'yay' has been installed."
 else
     echo "-> 'yay' is already installed."
 fi
@@ -42,7 +42,7 @@ if ! pacman -Q sddm &> /dev/null; then
     echo "!! 'sddm' not found. Installing and enabling now..."
     sudo pacman -S --noconfirm sddm
     sudo systemctl enable sddm
-    echo "✅ 'sddm' has been installed and enabled."
+    echo "'sddm' has been installed and enabled."
 else
     echo "-> 'sddm' is already installed."
 fi
@@ -53,7 +53,7 @@ if ! command -v flatpak &> /dev/null; then
     sudo pacman -S --noconfirm flatpak
     # Add the main Flathub repository system-wide so the user can access it
     sudo flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-    echo "✅ 'flatpak' has been installed and Flathub repository configured."
+    echo "'flatpak' has been installed and Flathub repository configured."
 else
     echo "-> 'flatpak' is already installed."
 fi
@@ -63,7 +63,7 @@ echo "-> Checking for user '$AUTOLOGIN_USER' and configuring autologin..."
 if ! id -u "$AUTOLOGIN_USER" &>/dev/null; then
     echo "!! User '$AUTOLOGIN_USER' not found. Creating passwordless user..."
     sudo useradd -m -g users -G wheel,audio,video,storage,power,network "$AUTOLOGIN_USER"
-    echo "✅ User '$AUTOLOGIN_USER' created without a password for seamless login."
+    echo "User '$AUTOLOGIN_USER' created without a password for seamless login."
 else
     echo "-> User '$AUTOLOGIN_USER' already exists."
 fi
@@ -77,7 +77,7 @@ sudo tee "$AUTOLOGIN_CONF_FILE" > /dev/null <<EOT
 User=$AUTOLOGIN_USER
 Session=plasma-bigscreen.desktop
 EOT
-echo "✅ Autologin configured."
+echo "Autologin configured."
 
 echo "-> Prerequisite check and setup complete."
 
@@ -96,5 +96,5 @@ echo "---"; echo "-> Building main package with 'makepkg'..."
 makepkg -i --noconfirm --clean
 
 echo "---"
-echo "✅ SUCCESS! Your TV box setup is complete."
-echo "-> Reboot your system now for a seamless, passwordless experience."
+echo "SUCCESS! Your TV box setup is complete."
+echo "-> Reboot your system for a seamless, passwordless experience."
