@@ -5,7 +5,7 @@
 
 # --- START CONFIGURATION ---
 # Replace this with your GitHub username and repository name.
-GITHUB_USER="your-username"
+GITHUB_USER="brandnkdavis"
 GITHUB_REPO="plasma-bigscreen-aur"
 # --- END CONFIGURATION ---
 
@@ -30,7 +30,7 @@ echo "-> Created temporary directory at: $TMP_DIR"
 cd "$TMP_DIR"
 
 # Construct the URL to the raw PKGBUILD file on GitHub
-PKGBUILD_URL="https://raw.githubusercontent.com/$GITHUB_USER/$GITHUB_REPO/main/PKGBUILD"
+PKGBUILD_URL="https://raw.githubusercontent.com/brandnkdavis/plasma-bigscreen-aur/main/PKGBUILD"
 
 echo "-> Downloading PKGBUILD from: $PKGBUILD_URL"
 curl -L -o PKGBUILD "$PKGBUILD_URL"
@@ -43,7 +43,7 @@ fi
 
 echo "-> PKGBUILD downloaded successfully."
 echo "---"
-echo "-> Starting the build process with makepkg. This may take a while."
+echo "-> Starting the build process with makepkg. This may take a while, please be patient"
 echo "-> You will be prompted for your password to install dependencies and the final package."
 
 # Run makepkg
@@ -53,5 +53,5 @@ echo "-> You will be prompted for your password to install dependencies and the 
 makepkg -sic
 
 echo "---"
-echo "✅ SUCCESS: The package has been built and installed."
+echo "SUCCESS: Plasma Bigscreen has been built and installed."
 
