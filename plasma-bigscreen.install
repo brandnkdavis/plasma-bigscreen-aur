@@ -1,0 +1,28 @@
+post_install() {
+    # 1. Identify the user who ran makepkg
+    REAL_USER=${SUDO_USER:-$(logname)}
+
+    # 2. Grant hardware access
+    echo "==> Adding $REAL_USER to video and render groups..."
+    usermod -aG video,render "$REAL_USER"
+
+    # 3. Create SDDM Autologin configuration
+    echo "==> Configuring SDDM Autologin for user: $REAL_USER"
+    mkdir -p /etc/sddm.conf.d
+    cat <<EOF > /etc/sddm.conf.d/autologin.conf
+[Autologin]
+User=$REAL_USER
+Session=plasma-bigscreen-wayland
+Relogin=false
+EOF
+
+    # 4. Enable system services
+    echo "==> Enabling SDDM and VirtualBox Guest services..."
+    systemctl enable sddm
+
+    echo "==> Done! Your TV Box is ready. Reboot to start."
+}
+
+post_upgrade() {
+    post_install
+}
