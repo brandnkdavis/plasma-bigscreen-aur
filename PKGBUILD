@@ -1,30 +1,65 @@
-# Maintainer: User8395 <therealuser8395@proton.me>
+# Maintainer: Brandon
 pkgname=plasma-bigscreen-git
-pkgver=6.0.0 # Update this to the latest version available on KDE's GitLab repository
+pkgver=r1234.gabcdef
 pkgrel=1
-pkgdesc="A big launcher giving you easy access to any installed apps and skills"
-arch=('x86_64')
-url="https://plasma-bigscreen.org/"
-license=('GPL2')
-groups=()
-depends=('kdeconnect-git' 'plasma-nm-git' 'plasma-pa-git' 'plasma-nano-git' 'bluez-qt-git' 'powerdevil-git')
-makedepends=('cmake' 'extra-cmake-modules-git' 'git')
-optdepends=('libcec: add USB-CEC support in order to be controlled by TV remotes'
-            'plasma-remotecontrollers-git: add support for remote controllers')
-conflicts=('plasma-bigscreen')
+pkgdesc="KDE Plasma UI for TV-box experience (Auto-Config & CachyOS Optimized)"
+arch=('x86_64' 'aarch64')
+url="https://invent.kde.org/plasma/plasma-bigscreen"
+license=('GPL-2.0-or-later')
+
+# Merged & Corrected Dependencies
+depends=(
+    'sddm'
+    'plasma-workspace' 
+    'kwin' 
+    'qt6-wayland' 
+    'plasma5support' 
+    'powerdevil' 
+    'kdeplasma-addons'
+    'kdeconnect'
+    'plasma-nm'
+    'plasma-pa'
+    'plasma-nano'
+    'plasma-settings'
+    'qt6-virtualkeyboard'
+    'bluez-qt'
+    'qt6-webengine'
+    'polkit-kde-agent'
+)
+
+makedepends=(
+    'cmake'
+    'extra-cmake-modules'
+    'git' 'vulkan-headers'
+    'plasma-wayland-protocols'
+    'kdoctools'
+)
+optdepends=('libcec: USB-CEC support' 'mycroft-core: voice control')
 provides=('plasma-bigscreen')
-source=("${pkgname}::git+https://invent.kde.org/plasma/${pkgname}.git")
+conflicts=('plasma-bigscreen')
+install=plasma-bigscreen.install
+source=('git+https://invent.kde.org/plasma/plasma-bigscreen.git')
+md5sums=('SKIP')
+
+pkgver() {
+    cd "plasma-bigscreen"
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
 
 build() {
-        cd "$srcdir"/"${pkgname}"
-        cmake -B build \
-              -DCMAKE_INSTALL_PREFIX="/usr" \
-              -DCMAKE_BUILD_TYPE=Release \
-              -Wno-dev
-
-        cmake --build build
+    cmake -B build -S "plasma-bigscreen" \
+        -DCMAKE_INSTALL_PREFIX="/usr" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DBUILD_TESTING=OFF
+    cmake --build build
 }
 
 package() {
-        DESTDIR="$pkgdir" cmake --install build
+    DESTDIR="$pkgdir" cmake --install build
+
+    # Automatically fix the .desktop file to use dbus-run-session
+    if [ -f "$pkgdir/usr/share/wayland-sessions/plasma-bigscreen-wayland.desktop" ]; then
+        sed -i 's|Exec=.*|Exec=dbus-run-session /usr/bin/plasma-bigscreen-wayland|' \
+            "$pkgdir/usr/share/wayland-sessions/plasma-bigscreen-wayland.desktop"
+    fi
 }
