@@ -30,11 +30,17 @@ depends=(
 makedepends=(
     'cmake'
     'extra-cmake-modules'
-    'git' 'vulkan-headers'
+    'git'
+    'vulkan-headers'
     'plasma-wayland-protocols'
     'kdoctools'
 )
-optdepends=('libcec: USB-CEC support' 'mycroft-core: voice control')
+
+optdepends=(
+    'libcec' # USB-CEC support
+    'mycroft-core' # voice control
+)
+
 provides=('plasma-bigscreen')
 conflicts=('plasma-bigscreen')
 install=plasma-bigscreen.install
